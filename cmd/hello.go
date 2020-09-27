@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/AnguillaJaponica/hawk/config"
 	"github.com/spf13/cobra"
@@ -35,11 +36,18 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("configFile: %s\nconfig: %#v\n", cfgFile, config.Conf)
 		fmt.Println("hello called")
+		foo, err := cmd.PersistentFlags().GetString("foo")
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		fmt.Println(foo)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(helloCmd)
+	helloCmd.PersistentFlags().String("foo", "", "A help for hello")
 
 	// Here you will define your flags and configuration settings.
 
